@@ -20,4 +20,15 @@ pipeline {
 			}
 		}
 	}
+	post {
+		always {
+			echo "I am awesome and I always run"
+		}
+		success {
+			echo "I run when pipeline success"
+		}
+		failure {
+			echo "I run when pipeline fails"
+		}
+	}
 }
