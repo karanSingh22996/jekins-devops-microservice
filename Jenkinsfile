@@ -38,6 +38,29 @@ pipeline {
 				sh 'mvn failsafe:integration-test failsafe:verify'
 			}
 		}
+		stage('Package'){
+			steps{
+				sh "mvn package -DskipTests"
+			}
+		}
+		stage('Build Docker Image'){
+			steps{
+				//one way
+				//docker buld -t karansingh22996/in28mindevops:$env.BUILD_TAG
+				//other way
+				script{
+					dockerImage = docker.build("karansingh22996/in28mindevops:${env.BUILD_TAG}")
+				}
+			}
+		}
+		stage('Push Docker Image'){
+			steps{
+				docker.withRegistry('','dockerhub') {
+				dockerImage.push();
+				dockerImage.push('latest');
+				}
+			}
+		}
 	}
 	post {
 		always {
