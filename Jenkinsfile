@@ -39,12 +39,12 @@ pipeline {
 			}
 		}
 		stage('Package'){
-			steps{
+			steps {
 				sh "mvn package -DskipTests"
 			}
 		}
 		stage('Build Docker Image'){
-			steps{
+			steps {
 				//one way
 				//docker buld -t karansingh22996/in28mindevops:$env.BUILD_TAG
 				//other way
@@ -53,13 +53,15 @@ pipeline {
 				}
 			}
 		}
-		stage('Push Docker Image'){
-			steps{
+		stage('Push Docker Image') {
+			steps {
+				script {
 				docker.withRegistry('','dockerhub') {
 				dockerImage.push();
 				dockerImage.push('latest');
-				}
+			  }
 			}
+		 }
 		}
 	}
 	post {
